@@ -13,8 +13,8 @@ private:
 	int durata;
 public:
 	Filme() :id(++nrFilme) {
-		this->titlu = "N/A";
-		this->regizor = "N/A";
+		this->titlu = "";
+		this->regizor = "";
 		this->anulLansarii = 0;
 		this->rating = 0;
 		this->descriere = NULL;
@@ -57,7 +57,7 @@ public:
 		if (this->descriere != NULL) {
 			return this->descriere;
 		}
-		else return "Descriere: N/A";
+		else return "Descriere: ";
 	}
 
 	float getRating() {
