@@ -23,17 +23,11 @@ protected:
 public:
 	static int numarator;
 
-	//Constructor = functie memmbra speciala, nu are tip returnat, au acelasi nume cu clasa
-	//il folosim pt a crea obiecte
-	// 3 feluri: 
-	//1. constructor fara parametri/implicit/default
-	//2. constructor cu parametri (de la 1 la nr atributelor din clasa
-	//3. constructor de copiere
 
 	Activitate() :idActivitate(numarator++)
 	{ //constructor fara parametri
 		this->denumire = NULL;
-		this->locatie = "";
+		this->locatie = "Necunoscuta";
 		this->durata = 0;
 		this->nrObiecte = 0;
 		this->denumireObiecte = NULL;
@@ -41,9 +35,29 @@ public:
 		this->gradDificultate = Usoara;
 	}
 
+	//constructor cu toti parametri
 	Activitate(const char* denumire,string locatie, int durata, int nrObiecte, string* denumireObiecte, float* greutateObiecte, grad gradDificultate ):idActivitate(numarator++) 
 	{
-	 
+		//validare pt char*
+		if (strlen(denumire) >= 3)
+		{
+			this->denumire = new char[strlen(denumire) + 1];
+			strcpy(this->denumire, denumire);
+		}
+		else
+		{
+			this->denumire = new char[strlen("Necunoscut") + 1];
+			strcpy(this->denumire, "Necunoscut");
+		}
+		//validare pt string
+		if (locatie.size() >= 3)
+		{
+			this->locatie = locatie;
+		}
+		else
+		{
+			this->locatie = "Necunoscuta";
+		}
 	}
 };
 
