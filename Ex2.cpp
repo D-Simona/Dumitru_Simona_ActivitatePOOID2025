@@ -81,7 +81,7 @@ public:
 			for (int i = 0; i < this->nrObiecte; i++)
 			{
 				this->greutateObiecte[i] = greutateObiecte[i];
-			}			
+			} 			
 		}
 		else
 		{
@@ -90,6 +90,94 @@ public:
 			this->greutateObiecte = NULL;
 		}
 		this->gradDificultate = gradDificultate;
+	}
+
+	//constructorul de copiere
+	Activitate(const Activitate& a) :idActivitate(a.idActivitate)
+	{
+			if (strlen(denumire) >= 3)
+			{
+				this->denumire = new char[strlen(a.denumire) + 1];
+				strcpy(this->denumire, a.denumire);
+			}
+			else
+			{
+				this->denumire = new char[strlen("Necunoscut") + 1];
+				strcpy(this->denumire, "Necunoscut");
+			}
+		//validare pt string
+		if (locatie.size() >= 3)
+		{
+			this->locatie = a.locatie;
+		}
+		else
+		{
+			this->locatie = "Necunoscuta";
+		}
+		//validare pt durata (numeric)
+		if (durata > 0)
+		{
+			this->durata = a.durata;
+		}
+		else
+		{
+			this->durata = 0;
+		}
+
+		if (nrObiecte > 0 && denumireObiecte != NULL & greutateObiecte != NULL)
+		{
+			this->nrObiecte = a.nrObiecte;
+			this->denumireObiecte = new string[this->nrObiecte];
+			for (int i = 0; i < this->nrObiecte; i++)
+			{
+				this->denumireObiecte[i] = a.denumireObiecte[i];
+			}
+			this->greutateObiecte = new float[this->nrObiecte];
+			for (int i = 0; i < this->nrObiecte; i++)
+			{
+				this->greutateObiecte[i] = a.greutateObiecte[i];
+			}
+		}
+		else
+		{
+			this->nrObiecte = 0;
+			this->denumireObiecte = NULL;
+			this->greutateObiecte = NULL;
+		}
+		this->gradDificultate = a.gradDificultate;
+	}
+
+	const int getIdActivitate()
+	{
+		return this->idActivitate;
+	}
+	char* getDenumire()
+	{
+		return this->denumire;
+	}
+	string getLocatie()
+	{
+		return this->locatie;
+	}
+	int getDurata() 
+	{
+		return this->durata;
+	}
+	int getNrObiecte()
+	{
+		return this->nrObiecte;
+	}
+	string* getDenumireObiecte()
+	{
+		return this->denumireObiecte;
+	}
+	float* getGreutateObiecte()
+	{
+		return this->greutateObiecte;
+	}
+	grad getGradDificultate()
+	{
+		return this->gradDificultate;
 	}
 };
 
