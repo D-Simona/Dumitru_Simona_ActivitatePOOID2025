@@ -8,10 +8,10 @@ enum grad
 	Usoara, Medie, Grea, FoarteGrea
 };
 
-class Activitate 
+class Activitate
 {
 	const int idActivitate;
-	
+
 protected:
 	char* denumire;
 	string locatie;
@@ -37,7 +37,7 @@ public:
 	}
 
 	//constructor cu toti parametri
-	Activitate(const char* denumire,string locatie, int durata, int nrObiecte, string* denumireObiecte, float* greutateObiecte, grad gradDificultate ):idActivitate(numarator++) 
+	Activitate(const char* denumire, string locatie, int durata, int nrObiecte, string* denumireObiecte, float* greutateObiecte, grad gradDificultate) :idActivitate(numarator++)
 	{
 		//validare pt char*
 		if (strlen(denumire) >= 3)
@@ -81,7 +81,7 @@ public:
 			for (int i = 0; i < this->nrObiecte; i++)
 			{
 				this->greutateObiecte[i] = greutateObiecte[i];
-			} 			
+			}
 		}
 		else
 		{
@@ -95,16 +95,16 @@ public:
 	//constructorul de copiere
 	Activitate(const Activitate& a) :idActivitate(a.idActivitate)
 	{
-			if (strlen(denumire) >= 3)
-			{
-				this->denumire = new char[strlen(a.denumire) + 1];
-				strcpy(this->denumire, a.denumire);
-			}
-			else
-			{
-				this->denumire = new char[strlen("Necunoscut") + 1];
-				strcpy(this->denumire, "Necunoscut");
-			}
+		if (strlen(denumire) >= 3)
+		{
+			this->denumire = new char[strlen(a.denumire) + 1];
+			strcpy(this->denumire, a.denumire);
+		}
+		else
+		{
+			this->denumire = new char[strlen("Necunoscut") + 1];
+			strcpy(this->denumire, "Necunoscut");
+		}
 		//validare pt string
 		if (locatie.size() >= 3)
 		{
@@ -147,6 +147,7 @@ public:
 		this->gradDificultate = a.gradDificultate;
 	}
 
+	//getteri
 	const int getIdActivitate()
 	{
 		return this->idActivitate;
@@ -159,7 +160,7 @@ public:
 	{
 		return this->locatie;
 	}
-	int getDurata() 
+	int getDurata()
 	{
 		return this->durata;
 	}
@@ -179,6 +180,63 @@ public:
 	{
 		return this->gradDificultate;
 	}
+
+	//setteri (void-nu returneaza nimic, doar modifica)
+	//pentru atributele alocate dinamic trebuie mai intai sa dezalocam memoria
+
+	void setDenumire(const char* denumire)
+	{
+
+		if (strlen(denumire) >= 3)
+		{
+			if (this->denumire != NULL) {
+				delete[]this->denumire;
+			}
+			this->denumire = new char[strlen(denumire) + 1];
+			strcpy(this->denumire, denumire);
+		}
+		else throw new exception("Denumirea introdusa este gresita");
+	}
+
+	void setLocatie(string locatie)
+	{
+		if (locatie.size() >= 3)
+		{
+			this->locatie = locatie;
+		}
+	}
+
+	void setDurata(int durata)
+	{
+		if (durata > 0)
+		{
+			this->durata = durata;
+		}
+		
+	}
+	void setObiecte(int nrObiecte, string* denumireObiecte, float* greutateObiecte)
+	{
+		if (nrObiecte > 0 && denumireObiecte != NULL & greutateObiecte != NULL)
+		{
+			this->nrObiecte = nrObiecte;
+			this->denumireObiecte = new string[this->nrObiecte];
+			for (int i = 0; i < this->nrObiecte; i++)
+			{
+				this->denumireObiecte[i] = denumireObiecte[i];
+			}
+			this->greutateObiecte = new float[this->nrObiecte];
+			for (int i = 0; i < this->nrObiecte; i++)
+			{
+				this->greutateObiecte[i] = greutateObiecte[i];
+			}
+		}
+				
+	}
+	void setGradDificultate(grad gradDificulate)
+	{
+		this->gradDificultate = gradDificultate;
+	}
+
 
 	//operatorul =
 	Activitate& operator=(const Activitate& a)
@@ -266,7 +324,21 @@ public:
 		{
 			delete[]this->greutateObiecte;
 		}
+		numarator--;
 	}
+
+	//metode = functii specifice clasei care primesc pointerul this ca parametru implicit si au rol de a prelucra datele din clasa
+	//exemple: suma, minim, maxim, medie etc
+	float greutateTotala()
+	{
+		float suma = 0;
+		for (int i = 0; i < this->nrObiecte; i++)
+		{
+			suma += this->greutateObiecte[i];
+		}
+		return suma;
+	}
+
 
 };
 
@@ -298,5 +370,35 @@ void main() {
 
 	Activitate a2 = a1;
 
+
+	try
+	{
+		a1.setDenumire("Io");
+	}
+	catch (exception* ex)
+	{
+		cout << ex->what() << endl;
+	}
 	
+
+	string denumiriNoi[] = { "presa", "haltere", "ciocan"};
+	float greutatiNoi[] = { 22, 17.5, 11.5 };
+	a1.setLocatie("Bucuresti");
+	a1.setDurata(80);
+	a1.setObiecte(3, denumiriNoi, greutatiNoi);
+	a1.setGradDificultate(Grea);
+	cout << a1.getDenumire() << endl;
+	cout << a1.getLocatie() << endl;
+	cout << a1.getDurata() << endl;
+	cout << a1.getNrObiecte() << endl;
+	for (int i = 0; i < a1.getNrObiecte(); i++)
+	{
+		cout << a1.getDenumireObiecte()[i] << endl;
+
+	}
+	for (int i = 0; i < a1.getNrObiecte(); i++)
+	{
+		cout << a1.getGreutateObiecte()[i] << endl;
+	}
+	cout << a1.getGradDificultate() << endl;
 }
