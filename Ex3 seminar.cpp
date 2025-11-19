@@ -26,7 +26,7 @@ public:
 		this->greutatiSeminte = NULL;
 	}
 
-	//constructorul cu toti parametrii
+	//constructorul cu toti parametri
 	Fruct(const char* nume, string culoare, float greutate, int lunaMaturitate, int nrSeminte, const float* greutatiSeminte) :idFruct(++numarFructe)
 	{
 		//alocare memorie pt char
@@ -118,8 +118,112 @@ public:
 		}
 	}
 
+	//getteri si setteri
+	float getGreutate()
+	{
+		return this->greutate;
+	}
 
+	void setGreutate(float greutate)
+	{
+		if (greutate > 0)
+		{
+			this->greutate = greutate;
+		}
+	}
 
+	char* gretNume()
+	{
+		return this->nume;
+	}
+
+	void setNume(const char* nume)
+	{
+		if (strlen(nume) >= 3)
+		{
+			if (this->nume != NULL) {
+				delete[]this->nume;
+			}
+			this->nume = new char[strlen(nume) + 1];
+			strcpy_s(this->nume, strlen(nume) + 1, nume);
+		}
+	}
+
+	float* getGreutatiSeminte()
+	{
+		return this->greutatiSeminte;
+	}
+
+	float getGreutateSamanayta(int pozitie)
+	{
+		if (pozitie >= 0 && pozitie < nrSeminte)
+		{
+			return this->greutatiSeminte[pozitie];
+		}
+		throw 404;
+	}
+
+	void setGreutatiSeminte(int nrSeminte, float* greuatatiSeminte)
+	{
+		if (nrSeminte > 0)
+		{
+			this->nrSeminte = nrSeminte;
+			if (this->greutatiSeminte != NULL) {
+				delete[]this->greutatiSeminte;
+			}
+			this->greutatiSeminte = new float[nrSeminte];
+			for (int i = 0; i < nrSeminte; i++)
+			{
+				this->greutatiSeminte[i] = greutatiSeminte[i];
+			}
+		}
+	}
+
+	int getIdFruct()
+	{
+		return this->idFruct;
+	}
+
+	static int getNumarFructe()
+	{
+		return numarFructe;
+	}
+	void setNumarFructe(int nrFructe)
+	{
+		numarFructe = nrFructe;
+	}
+
+	int getLunaMaturitate()
+	{
+		return this->lunaMaturitate;
+	}
+
+	string getCuloare()
+	{
+		return this->culoare;
+	}
+
+	void setCuloare(string culoare)
+	{
+		if (culoare.size() > 0)
+		{
+			this->culoare = culoare;
+		}
+	}
+	int getNumarSeminte()
+	{
+		return this->nrSeminte;
+	}
+		
+
+	//operatorul =
+	Fruct operator=(const Fruct& copie)
+	{
+		if (this != &copie)
+		{
+
+		}
+	}
 };
 
 int Fruct::numarFructe = 0;
