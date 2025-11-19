@@ -30,23 +30,94 @@ public:
 	Fruct(const char* nume, string culoare, float greutate, int lunaMaturitate, int nrSeminte, const float* greutatiSeminte) :idFruct(++numarFructe)
 	{
 		//alocare memorie pt char
-		this->nume = new char[strlen(nume) + 1];
-		strcpy_s(this->nume, strlen(nume)+1, nume);
+		//validare char
+		if (strlen(nume) >= 3)
+		{
+			this->nume = new char[strlen(nume) + 1];
+			strcpy_s(this->nume, strlen(nume) + 1, nume);
+		}
+		else
+		{
+			this->nume = new char[strlen("N/A") + 1];
+			strcpy_s(this->nume, strlen("N/A") + 1, "N/A");
+		}
 		
-		this->culoare = culoare;
-		this->greutate = greutate;
-		this->lunaMaturitate = lunaMaturitate;
-		this->nrSeminte = nrSeminte;
+		
+		//validare string
+		if(culoare.size() >= 3) {
+			this->culoare = culoare;
+
+		}
+		else
+		{
+			this->culoare = "";
+
+		}
+		//validare numeric
+		if (greutate > 0)
+		{
+			this->greutate = greutate;
+			this->lunaMaturitate = lunaMaturitate;
+
+		}
+		else
+		{
+			this->greutate = 0;
+			this->lunaMaturitate = 0;
+
+		}
 		
 		//alocare memorie pt float
-		this->greutatiSeminte = new float[nrSeminte];
-		for (int i = 0; i < this->nrSeminte; i++)
+		//validare vector
+		if (nrSeminte > 0 && greutatiSeminte != NULL)
 		{
-			this->greutatiSeminte[i] = greutatiSeminte[i];
+			this->nrSeminte = nrSeminte;
+			this->greutatiSeminte = new float[nrSeminte];
+			for (int i = 0; i < this->nrSeminte; i++)
+			{
+				this->greutatiSeminte[i] = greutatiSeminte[i];
+			}
+		}
+		else
+		{
+			this->nrSeminte = 0;
+			this->greutatiSeminte = NULL;
+
 		}
 	}
 
 	//constructorul de copiere
+	Fruct(const Fruct& copie) :idFruct(++numarFructe)
+	{
+		this->culoare = copie.culoare;
+		this->greutate = copie.greutate;
+		this->lunaMaturitate = copie.lunaMaturitate;
+		this->nrSeminte = copie.nrSeminte;
+
+		if (copie.greutatiSeminte != NULL)
+		{
+			this->greutatiSeminte = new float[copie.nrSeminte];
+			for (int i = 0; i < copie.nrSeminte; i++)
+			{
+				this->greutatiSeminte[i] = copie.greutatiSeminte[i];
+			}
+		}
+		else
+		{
+			this->greutatiSeminte = NULL;
+		}
+
+		if (copie.nume != NULL)
+		{
+			this->nume = new char[strlen(copie.nume) + 1];
+			strcpy_s(this->nume, strlen(copie.nume) + 1, copie.nume);
+		}
+		else 
+		{
+			this->nume = NULL;
+		}
+	}
+
 
 
 };
@@ -55,6 +126,8 @@ int Fruct::numarFructe = 0;
 
 void main()
 {
+	float* vector = new float[3] {0.1, 0.2, 0.3};
+	Fruct fruct("Mar", "Galben", 0.4, 8, 3, vector);
 
 
 }
