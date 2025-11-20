@@ -280,9 +280,131 @@ public:
 	//operatori
 
 	//operatorul +=
+	void operator+=(float valoareDeAdaugatLaGreutate)
+	{
+		this->greutate += valoareDeAdaugatLaGreutate;
+	}
 
+	friend Fruct operator+=(float valoareDeAdaugatLaGreutate, Fruct& f)
+	{
+		f.greutate += valoareDeAdaugatLaGreutate;
+		
+		return f;
+	}
+
+	//operator< comparatie intre 2 obiecte dupa un atribut => returneaza bool
+	bool operator<(const Fruct& f)
+	{
+		return this->greutate < f.greutate;
+	}
+
+	//operator negatie
+	bool operator!()
+	{
+		return this->lunaMaturitate != 0;
+	}
+
+	//operator functie
+	float operator()(int pozitie)
+	{
+		return this->getGreutateSamanata(pozitie);
+	}
+
+	//operator index
+	char& operator[](int index)
+	{
+		if (index >= 0 && index < strlen(this->nume))
+		{
+			return this->nume[index];
+		}
+		else
+		{
+			throw "Indexul nu se afla in interval!";
+		}
+	}
+
+	//explicit  operator int
+	explicit operator int()
+	{
+		return this->lunaMaturitate;
+	}
+
+	//operator postincrementare
+	Fruct operator++(int)
+	{
+		Fruct copie = *this;
+		this->lunaMaturitate++;
+		return copie;
+	}
+
+	//operator preincrementare
+	Fruct operator++()
+	{
+		this->lunaMaturitate++;
+		return *this;
+	}
+
+	//operator de afisare
+	friend void operator<<(ostream& consola, Fruct f)
+	{
+		consola << endl << "Id :" << f.idFruct;
+		consola << endl << (f.nume != NULL ? "Nume: " + string(f.nume) : "Nume nespecificat");
+		consola << endl << "Culoare :" << f.culoare;
+		consola << endl << "Greutate :" << f.greutate;
+		consola << endl << "Luna maturitate :" << f.lunaMaturitate;
+		consola << endl << "Nr seminte :" << f.nrSeminte;
+		if (f.greutatiSeminte != NULL)
+		{
+			consola << endl << "Greutati seminte: ";
+			for (int i = 0; i < f.getNumarSeminte() - 1; i++)
+			{
+				consola << f.getGreutateSamanata(i) << ", ";
+			}
+			consola << f.getGreutateSamanata(f.getNumarSeminte() - 1) << ".";
+		}
+		else
+		{
+			consola << endl << "Greutati seminte nespecificat.";
+		}
+
+	}
+	friend void operator>>(istream& in, Fruct& f);
 
 };
+
+//operator scriere
+void operator>>(istream& cititor, Fruct& f)
+{
+	cout << endl << "Nume: ";
+	if (f.nume != NULL)
+	{
+		delete[]f.nume;
+		f.nume = NULL;
+	}
+	char buffer[20];
+	cititor >> buffer;
+	f.nume = new char[strlen(buffer) + 1];
+	strcpy_s(f.nume, strlen(buffer) + 1, buffer);
+
+	cout << endl << "Culoare: "; cititor >> f.culoare;
+	cout << endl << "Greutate: "; cititor >> f.greutate;
+	cout << endl << "Luna maturitate:"; cititor >> f.lunaMaturitate;
+	cout << endl << "Numar seminte: "; cititor >> f.nrSeminte;
+
+	if (f.greutatiSeminte != NULL)
+	{
+		delete[]f.greutatiSeminte;
+		f.greutatiSeminte = NULL;
+	}
+	cout << endl << "Greutati seminte: ";
+	f.greutatiSeminte = new float[f.nrSeminte];
+	for (int i = 0; i < f.getNumarSeminte(); i++)
+	{
+		cout << endl << "Greutati[" << i << "]: ";
+		cititor >> f.greutatiSeminte[i];
+	}
+	
+}
 
 int Fruct::numarFructe = 0;
 
@@ -305,11 +427,49 @@ void main()
 	}
 	catch (...)
 	{
-		cout << endl < "Pozitia este in afara intervalului";
+		cout << endl << "Pozitia este in afara intervalului";
 	}
 
 	Fruct fruct2 = fruct;
 
 	Fruct fructDefault;
 	fructDefault = fruct;
+
+	fruct += 0.1;
+	0.1 += fruct;
+
+	if (fruct < fruct2)
+	{
+		cout << endl << "Primul fruct are greutatea mai mica decat al doilea fruct";
+	}
+	else
+	{
+		cout << endl << "Al doilea fruct are greutatea mai mica decat primul fruct";
+	}
+
+	if (!fruct)
+	{
+		cout << endl << "Fructul este copt";
+	}
+	else
+	{
+		cout << "Fructul este crud";
+	}
+
+	cout << endl << fruct(2);
+
+	cout << endl << "Litera de pe pozitia 2 din nume este" << fruct[1];
+	fruct[1] = 'e';
+	cout << endl << "Litera de pe pozitia 2 din nume este" << fruct[1];
+
+	cout << endl << (int)fruct;
+
+	Fruct f1 = fruct++;
+	//f1.lunaMaturitate=8
+	cout << f1;
+
+	Fruct f2 = ++fruct;
+	//f2.lunaMaturitate=10
+	cout << f2;
+
 }
