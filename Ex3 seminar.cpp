@@ -154,7 +154,7 @@ public:
 		return this->greutatiSeminte;
 	}
 
-	float getGreutateSamanayta(int pozitie)
+	float getGreutateSamanata(int pozitie)
 	{
 		if (pozitie >= 0 && pozitie < nrSeminte)
 		{
@@ -221,9 +221,67 @@ public:
 	{
 		if (this != &copie)
 		{
+			this->culoare = copie.culoare;
+			this->greutate = copie.greutate;
+			this->lunaMaturitate = copie.lunaMaturitate;
+			this->nrSeminte = copie.nrSeminte;
 
+			if (this->greutatiSeminte != NULL)
+			{
+				delete[]this->greutatiSeminte;
+				this->greutatiSeminte = NULL;
+			}
+
+			if (copie.greutatiSeminte != NULL)
+			{
+				this->greutatiSeminte = new float[copie.nrSeminte];
+				for (int i = 0; i < copie.nrSeminte; i++)
+				{
+					this->greutatiSeminte[i] = copie.greutatiSeminte[i];
+				}
+			}
+			else
+			{
+				this->greutatiSeminte = NULL;
+			}
+
+			if (this->nume != NULL)
+			{
+				delete[]this->nume;
+				this->nume = NULL;
+			}
+
+			if (copie.nume != NULL)
+			{
+				this->nume = new char[strlen(copie.nume) + 1];
+				strcpy_s(this->nume, strlen(copie.nume) + 1, copie.nume);
+			}
+			else
+			{
+				this->nume = NULL;
+			}
+		}
+		return *this;
+	}
+
+	//destructor
+	~Fruct()
+	{
+		if (this->greutatiSeminte != NULL)
+		{
+			delete[]this->greutatiSeminte;
+		}
+		if (this->nume != NULL)
+		{
+			delete[]this->nume;
 		}
 	}
+
+	//operatori
+
+	//operatorul +=
+
+
 };
 
 int Fruct::numarFructe = 0;
@@ -233,5 +291,25 @@ void main()
 	float* vector = new float[3] {0.1, 0.2, 0.3};
 	Fruct fruct("Mar", "Galben", 0.4, 8, 3, vector);
 
+	try {
+		cout << endl << fruct.getGreutateSamanata(3);
+	}
+	catch (int cod)
+	{
+		cout << endl << cod;
+	}
+	catch (const char* mesaj)
+	{
 
+		cout << endl << mesaj;
+	}
+	catch (...)
+	{
+		cout << endl < "Pozitia este in afara intervalului";
+	}
+
+	Fruct fruct2 = fruct;
+
+	Fruct fructDefault;
+	fructDefault = fruct;
 }
