@@ -1,9 +1,8 @@
 #include<iostream>
-#include<string>
 
 using namespace std;
 
-class Calatorie 
+class Calatorie
 {
 private:
 	char* numeDestinatie;
@@ -12,14 +11,14 @@ public:
 
 	Calatorie(const char* numeDestinatie) :idCalatorie(1)
 	{
-		if (strlen(numeDestinatie) >=3)
+		if (strlen(numeDestinatie) >= 3)
 		{
 			this->numeDestinatie = new char[strlen(numeDestinatie) + 1];
 			strcpy_s(this->numeDestinatie, strlen(numeDestinatie) + 1, numeDestinatie);
 		}
 		else
 		{
-			this->numeDestinatie = new char[strlen("N/A")+1];
+			this->numeDestinatie = new char[strlen("N/A") + 1];
 			strcpy_s(this->numeDestinatie, strlen("N/A") + 1, "N/A");
 		}
 	}
@@ -29,7 +28,7 @@ public:
 		return this->idCalatorie;
 	}
 
-	void setNumeDestinatie(char* numeDestinatie)
+	void setNumeDestinatie(const char* numeDestinatie)
 	{
 		if (strlen(numeDestinatie) >= 3)
 		{
@@ -47,12 +46,12 @@ public:
 	{
 		if (this != &c)
 		{
-			if (this->numeDestinatie!=NULL)
+			if (this->numeDestinatie != NULL)
 			{
 				delete[]this->numeDestinatie;
 				this->numeDestinatie = NULL;
 			}
-			if(c.numeDestinatie!=NULL)
+			if (c.numeDestinatie != NULL)
 			{
 				this->numeDestinatie = new char[strlen(c.numeDestinatie) + 1];
 				strcpy_s(this->numeDestinatie, strlen(c.numeDestinatie) + 1, c.numeDestinatie);
@@ -68,10 +67,10 @@ public:
 	friend void operator<<(ostream& out, Calatorie c)
 	{
 		out << "Id: " << c.idCalatorie;
-		out<< (c.numeDestinatie != NULL ? "Nume destinatie: " + string(c.numeDestinatie) : "Nume nespecificat");
+		out << (c.numeDestinatie != NULL ? "Nume destinatie: " + string(c.numeDestinatie) : "Nume nespecificat");
 	}
 
-	void operator()(char* numeDestinatie)
+	void operator()(const char* numeDestinatie)
 	{
 
 		if (strlen(numeDestinatie) >= 3)
@@ -90,11 +89,12 @@ public:
 void main()
 {
 	Calatorie c1("Brasov");
-	cout<<c1.getIdCalatorie()<<endl;
+	cout << c1.getIdCalatorie() << endl;
 	c1.setNumeDestinatie("Craiova");
 	Calatorie c2("Bacau");
 	c2 = c1;
 	cout << c2;
-	c2("Constanta");
-
+	cout << endl;
+	c2.operator()("Constanta");
+	cout << c2;
 }
